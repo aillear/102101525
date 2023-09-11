@@ -1,4 +1,4 @@
-WIDTH = 300    # UI宽度
+WIDTH = 1000   # UI宽度
 HEIGHT = 600   # UI高度
 
 # 以下为面板ID

@@ -11,6 +11,9 @@ class Delegate:
         """
         self.__func_list = []
         self.param_num = -1
+        # 确保不传入参数的时候不会有问题
+        if len(args) == 0:
+            return
         func = args[0]
         if callable(func):
             self.param_num = func.__code__.co_argcount
@@ -29,6 +32,8 @@ class Delegate:
     def __call__(self, *args, **kwargs):  # 定义__call__方法
         """调用这个委托,返回委托内部的所有函数"""
         res_list = []
+        if self.__func_list is []:
+            return res_list
         for func in self.__func_list:
             temp = func(*args, **kwargs)
             # 只把有返回值的东西返回出去
@@ -40,6 +45,11 @@ class Delegate:
         if not callable(func):
             raise TypeError('Argument must be callable.')
 
+        if self.param_num == -1:
+            self.__func_list.append(func)
+            self.param_num = func.__code__.co_argcount
+            return
+
         if func.__code__.co_argcount != self.param_num:
             raise TypeError(f"the delegate takes {self.param_num} positional arguments "
                             f"but you added {func.__code__.co_argcount}.")
@@ -47,8 +57,11 @@ class Delegate:
         self.__func_list.append(func)
 
     def Remove(self, func):
+        """没试过"""
         if func in self.__func_list:
             self.__func_list.remove(func)
+        if len(self.__func_list) == 0:
+            self.param_num = -1
 
     def __iadd__(self, func):
         self.Add(func)
@@ -57,3 +70,4 @@ class Delegate:
     def __isub__(self, func):
         self.Remove(func)
         return self
+
