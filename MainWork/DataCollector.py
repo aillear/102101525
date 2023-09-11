@@ -1,6 +1,5 @@
 import re
 import requests
-from bs4 import BeautifulSoup
 
 
 def BVFinder(_keyword: str, _video_count: int):
