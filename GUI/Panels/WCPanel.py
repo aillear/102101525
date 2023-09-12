@@ -60,15 +60,15 @@ def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame:
     # 第四行
     tk.Label(wc_panel, text='字体').grid(row=4, column=1)
 
-    fonts_name = tkinter.ttk.Combobox(wc_panel)
+    fonts_name = tkinter.ttk.Combobox(wc_panel, state='readonly')
     fonts_name['value'] = GetFileName('./Fonts')
     fonts_name.current(0)
     fonts_name.grid(row=4, column=2)
 
     # 第五行
-    tk.Label(wc_panel, text='图片遮罩').grid(row=6, column=1)
+    tk.Label(wc_panel, text='图片遮罩,启用后上面设置的宽高失效').grid(row=6, column=1)
 
-    mask_name = tkinter.ttk.Combobox(wc_panel)
+    mask_name = tkinter.ttk.Combobox(wc_panel, state='readonly')
     mask_name['value'] = GetFileName('./ImageMasks', True)
     mask_name.current(0)
     mask_name.grid(row=5, column=2)
