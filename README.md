@@ -2,6 +2,12 @@
 
 基于`python`的小爬虫, 用于提取`bilibiili`的视频弹幕并加以简单的处理以及可视化。
 
+运行 `main.py` 为无GUI版本
+
+运行 `mainWithGUI.py` 为带GUI版本
+
+
+
 具体应该实现的功能：
 
 - 数据获取
