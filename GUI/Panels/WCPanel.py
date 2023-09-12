@@ -10,6 +10,7 @@ import jieba
 import _thread
 from PIL import Image, ImageTk
 import os
+from Support.CheckForInt import CheckForInt
 
 
 mask_tk = None
@@ -103,11 +104,17 @@ def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame:
     # 按钮绑定函数
     # 1.保存数据 2.新线程生成图片 3.跳转界面
     def Transmit():
+        if not CheckForInt(max_word_num,  '最大词数', 1, 1000):
+            return
+        if not CheckForInt(image_width, '图片宽度', 1, 5000):
+            return
+        if not CheckForInt(image_height, '图片高度', 1, 5000):
+            return
         #  保存数据
         DataKeeper.instance.SendData('imageName', image_name.get())
-        DataKeeper.instance.SendData('maxWordNum', max_word_num.get())
-        DataKeeper.instance.SendData('imageWidth', image_width.get())
-        DataKeeper.instance.SendData('imageHeight', image_height.get())
+        DataKeeper.instance.SendData('maxWordNum', int(max_word_num.get()))
+        DataKeeper.instance.SendData('imageWidth', int(image_width.get()))
+        DataKeeper.instance.SendData('imageHeight', int(image_height.get()))
         DataKeeper.instance.SendData('font', fonts_name.get())
         DataKeeper.instance.SendData('maskName', mask_name.get())
         # 开新线程来生成词云

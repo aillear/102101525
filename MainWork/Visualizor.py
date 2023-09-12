@@ -54,3 +54,4 @@ def CreateWordCloudImage(_content: str, _file_name: str, _max_words=100, _width=
                              background_color='white',
                              collocations=False).generate(_content)
     wc.to_file(f"WordCloudImage/{_file_name}")
+    print(f"图片保存为./WordCloudImage/{_file_name}")

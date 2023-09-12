@@ -1,9 +1,11 @@
-from GUI.PanelMgr import *
+from GUI.PanelMgr import PanelMgr
 from Settings import *
 from Support.DataKeeper import DataKeeper
 from Support.EventCenter import EventCenter
 import _thread
 from MainWork import DataAnalyst, DataCollector, CSVhandler
+import tkinter as tk
+from Support.CheckForInt import CheckForInt
 
 
 def CrawlerPanel(_root: tk.Tk, _id: int) -> tk.Frame:
@@ -43,14 +45,16 @@ def CrawlerPanel(_root: tk.Tk, _id: int) -> tk.Frame:
     # 第四行
     # 按钮绑定函数,要做的事情1.保存数据 2.开启新线程来爬虫 3.跳转界面
     def Transmit():
+        if CheckForInt(video_count, '搜索栏', 1, 500) is False:
+            return
         # 保存数据
         DataKeeper.instance.SendData('keyword', keyword.get())
-        DataKeeper.instance.SendData('videoCount', video_count.get())
+        DataKeeper.instance.SendData('videoCount', int(video_count.get()))
         DataKeeper.instance.SendData('danmakuSaveName', danmaku_save_name.get())
         # 开启新的线程进行爬虫作业
         # 订阅下爬取完毕事件,该事件将在爬虫线程中触发
         EventCenter.instance.AddEventListener('crawlOver', AfterCrawl)
-        _thread.start_new_thread(CrawlerHere, ())   # 新线程执行爬虫
+        _thread.start_new_thread(CrawlerHere, ())  # 新线程执行爬虫
         # 跳转界面到爬取中
         PanelMgr.instance.SwitchPanel(_root, CRAWLING_PANEL_ID)
 
@@ -80,14 +84,13 @@ def CrawlerHere():
     if danmaku_save_name is None:
         danmaku_save_name = 'default'
 
-    danmaku_save_name += '.xls'
     # 爬虫主要逻辑
     danmaku_list = DataCollector.DataCollect(keyword, video_count)
     DataKeeper.instance.SendData("danmakuList", danmaku_list)
     res_list = DataAnalyst.StrStatistics(danmaku_list)
     DataKeeper.instance.SendData("resList", res_list)
 
-    CSVhandler.List2Excel(res_list, danmaku_save_name)
+    CSVhandler.List2CSV(res_list, danmaku_save_name)
 
     # 在这里通知主线程爬取完毕
     EventCenter.instance.EventTrigger('crawlOver')
