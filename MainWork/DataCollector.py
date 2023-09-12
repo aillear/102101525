@@ -20,8 +20,11 @@ def BVFinder(_keyword: str, _video_count: int):
     while len(result_list) < _video_count:
         url = f"https://api.bilibili.com/x/web-interface/search/all/v2?page={_page}&keyword={_keyword}&tid=0"
         temp = requests.get(url, cookies=cookie, headers=header)
-        print(f"请求第{_page}页的数据中")
+        print(f"请求第{_page}页的数据中, 当前暂存{len(result_list)}")
         temp_bv_list = re.findall(pattern, temp.text)
+        if len(temp_bv_list) == 0:
+            print(f'在第{_page}页未搜索到任何视频! 当前已经查找{len(result_list)}个视频BV号')
+            return result_list
         result_list += temp_bv_list
         _page += 1
     print("BV号获取完成")
@@ -87,6 +90,9 @@ def DataCollect(_keyword: str, _video_count: int):
     """
     all_danmaku_list = []
     bv_list = BVFinder(_keyword, _video_count)
+    if len(bv_list) == 0:
+        print("未检索到任何视频! 请检查关键词!")
+        return all_danmaku_list
     print("开始解析BV号")
     for i in range(_video_count):
         print(f"{i+1}:", end="\t\t")

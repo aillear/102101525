@@ -8,7 +8,11 @@ from Support.EventCenter import EventCenter
 from MainWork import Visualizor
 import jieba
 import _thread
+from PIL import Image, ImageTk
+import os
 
+
+mask_tk = None
 
 def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame:
     if _id != WC_PANEL_ID:
@@ -61,6 +65,41 @@ def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame:
     fonts_name.grid(row=4, column=2)
 
     # 第五行
+    tk.Label(wc_panel, text='图片遮罩').grid(row=6, column=1)
+
+    mask_name = tkinter.ttk.Combobox(wc_panel)
+    mask_name['value'] = GetFileName('./ImageMasks', True)
+    mask_name.current(0)
+    mask_name.grid(row=5, column=2)
+
+    # 第六行
+    mask_img = None
+    if os.path.exists(f"./ImageMasks/{mask_name.get()}"):
+        mask_img = Image.open(f"./ImageMasks/{mask_name.get()}")
+    else:
+        mask_img = Image.new("RGB", (300, 300), (0, 0, 0))
+
+    global mask_tk
+    mask_tk = ImageTk.PhotoImage(mask_img)
+    mask_label = tk.Label(wc_panel, image=mask_tk)
+    mask_label.grid(row=6)
+
+    def ChangeMask(garbage):
+        _mask_img = None
+        if os.path.exists(f"./ImageMasks/{mask_name.get()}"):
+            _mask_img = Image.open(f"./ImageMasks/{mask_name.get()}")
+            w, h = _mask_img.size
+            _mask_img = _mask_img.resize((int(300 * w / h), 300))
+        else:
+            _mask_img = Image.new("RGB", (300, 300), (0, 0, 0))
+
+        global mask_tk
+        mask_tk = ImageTk.PhotoImage(_mask_img)
+        mask_label.configure(image=mask_tk)
+
+    mask_name.bind('<<ComboboxSelected>>', ChangeMask)
+
+    # 第七行
     # 按钮绑定函数
     # 1.保存数据 2.新线程生成图片 3.跳转界面
     def Transmit():
@@ -70,6 +109,7 @@ def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame:
         DataKeeper.instance.SendData('imageWidth', image_width.get())
         DataKeeper.instance.SendData('imageHeight', image_height.get())
         DataKeeper.instance.SendData('font', fonts_name.get())
+        DataKeeper.instance.SendData('maskName', mask_name.get())
         # 开新线程来生成词云
         # 订阅下生成玩事件,不过一般都不久
         EventCenter.instance.AddEventListener('WCOver', AfterWC)
@@ -83,7 +123,8 @@ def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame:
         EventCenter.instance.RemoveEventListener('WCOver', AfterWC)
         PanelMgr.instance.SwitchPanel(_root, WCOVER_PANEL_ID)    # 跳转界面
 
-    tk.Button(wc_panel, text='启动!', command=Transmit).grid(row=5, column=1)
+    tk.Button(wc_panel, text='启动!', command=Transmit).grid(row=7, column=1)
+
     wc_panel.pack()
     return wc_panel
 
@@ -96,9 +137,11 @@ def WCHere():
     image_height = DataKeeper.instance.GetData('imageHeight')
     max_word_num = DataKeeper.instance.GetData('maxWordNum')
     font = DataKeeper.instance.GetData('font')
-
+    mask_name = DataKeeper.instance.GetData('maskName')
+    if mask_name == 'None':
+        mask_name = None
     text = ' '.join((jieba.lcut('\n'.join(danmaku_list))))
-    Visualizor.CreateWordCloudImage(text, _file_name=image_name, _width=image_width,
+    Visualizor.CreateWordCloudImage(text, _file_name=image_name, _width=image_width, _mask_name=mask_name,
                                     _height=image_height, _font_name=font, _max_words=max_word_num)
 
     EventCenter.instance.EventTrigger('WCOver')

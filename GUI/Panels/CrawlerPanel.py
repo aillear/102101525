@@ -80,14 +80,14 @@ def CrawlerHere():
     if danmaku_save_name is None:
         danmaku_save_name = 'default'
 
-    danmaku_save_name += '.csv'
+    danmaku_save_name += '.xls'
     # 爬虫主要逻辑
     danmaku_list = DataCollector.DataCollect(keyword, video_count)
     DataKeeper.instance.SendData("danmakuList", danmaku_list)
     res_list = DataAnalyst.StrStatistics(danmaku_list)
     DataKeeper.instance.SendData("resList", res_list)
 
-    CSVhandler.List2CSV(res_list, danmaku_save_name)
+    CSVhandler.List2Excel(res_list, danmaku_save_name)
 
     # 在这里通知主线程爬取完毕
     EventCenter.instance.EventTrigger('crawlOver')

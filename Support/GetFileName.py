@@ -2,9 +2,11 @@ import os
 
 
 # 定义一个函数，用于获取目录下的所有文件名，并返回一个元组
-def GetFileName(dir_path):
+def GetFileName(dir_path, _add_default=False):
     # 定义一个空列表，用于存储文件名
     _names = []
+    if _add_default:
+        _names.append('None')
     # 获取指定目录下的所有文件和目录的列表
     for path in os.listdir(dir_path):
         # 判断当前元素是否是文件
