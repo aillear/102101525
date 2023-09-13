@@ -67,7 +67,7 @@ def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame | None:
     tk.Label(wc_panel, text='图片遮罩,启用后上面设置的宽高失效').grid(row=6, column=1)
 
     mask_name = tkinter.ttk.Combobox(wc_panel, state='readonly')
-    mask_name['value'] = get_file_name('./image_masks', ('.png', '.jpg', '.jpeg', '.bmp', '.gif'),
+    mask_name['value'] = get_file_name('./image_masks', ('.png', '.jpg', '.jpeg', '.gif'),
                                        True)
     mask_name.current(0)
     mask_name.grid(row=5, column=2)

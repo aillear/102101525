@@ -97,7 +97,7 @@ def create_word_cloud_image(_content: str, _file_name: str, _max_words=100, _wid
         image = Image.open(f"image_masks/{_mask_name}")
         image_mask = transform_mask(image)
 
-    wc = wordcloud.WordCloud(font_path=f"Fonts/{_font_name}",
+    wc = wordcloud.WordCloud(font_path=f"fonts/{_font_name}",
                              mask=image_mask,
                              max_words=_max_words,
                              width=_width,
