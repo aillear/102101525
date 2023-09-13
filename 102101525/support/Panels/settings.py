@@ -1,5 +1,5 @@
-WIDTH = 1000   # UI宽度
-HEIGHT = 600   # UI高度
+WIDTH = 1000
+HEIGHT = 600
 
 # 以下为面板ID
 CRAWLER_PANEL_ID = 1

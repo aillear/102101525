@@ -1,8 +1,8 @@
-import re
 import requests
+import re
 
 
-def BVFinder(_keyword: str, _video_count: int):
+def bv_finder(_keyword: str, _video_count: int):
     """
     通过关键词获取前n页的相关视频BV号, 返回BV号的字符串列表
     :param _keyword: 关键词
@@ -31,7 +31,7 @@ def BVFinder(_keyword: str, _video_count: int):
     return result_list
 
 
-def CidReader(_bv: str):
+def cid_reader(_bv: str):
     """
     读取BV号对应视频的cid
     :param _bv: bv号
@@ -64,7 +64,7 @@ def CidReader(_bv: str):
     return cid_value
 
 
-def DanmakuReader(_cid: str):
+def danmaku_reader(_cid: str):
     """
     根据cid读取当前视频弹幕池内弹幕
     :param _cid: cid
@@ -81,7 +81,7 @@ def DanmakuReader(_cid: str):
     return danmaku_list
 
 
-def DataCollect(_keyword: str, _video_count: int):
+def data_collect(_keyword: str, _video_count: int):
     """
     对本模块进行进一步的封装
     :param _keyword: 关键词
@@ -89,20 +89,14 @@ def DataCollect(_keyword: str, _video_count: int):
     :return: 弹幕列表
     """
     all_danmaku_list = []
-    bv_list = BVFinder(_keyword, _video_count)
+    bv_list = bv_finder(_keyword, _video_count)
     if len(bv_list) == 0:
         print("未检索到任何视频! 请检查关键词!")
         return all_danmaku_list
     print("开始解析BV号")
     for i in range(_video_count):
         print(f"{i+1}:", end="\t\t")
-        cid = CidReader(bv_list[i])
-        all_danmaku_list += DanmakuReader(cid)
+        cid = cid_reader(bv_list[i])
+        all_danmaku_list += danmaku_reader(cid)
     print(f"弹幕获取成功,共{len(all_danmaku_list)}条")
     return all_danmaku_list
-
-
-if __name__ == '__main__':
-    keyword = input("输入关键词: \n")
-    page = int(input("输入要爬取的视频: \n"))
-    res = DataCollect(keyword, page)

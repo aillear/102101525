@@ -3,6 +3,7 @@ class Delegate:
     委托
     属性
     """
+
     def __init__(self, *args):  # 将可调用对象保存为属性, 藏起来
         """
         创建委托, 确保输入的变量都是函数应用,并且参数都一样.返回值无所谓
@@ -41,10 +42,9 @@ class Delegate:
                 res_list.append(temp)
         return tuple(res_list)
 
-    def Add(self, func):
+    def add(self, func):
         if not callable(func):
             raise TypeError('Argument must be callable.')
-
         if self.param_num == -1:
             self.__func_list.append(func)
             self.param_num = func.__code__.co_argcount
@@ -56,7 +56,7 @@ class Delegate:
 
         self.__func_list.append(func)
 
-    def Remove(self, func):
+    def remove(self, func):
         """没试过"""
         if func in self.__func_list:
             self.__func_list.remove(func)
@@ -64,10 +64,42 @@ class Delegate:
             self.param_num = -1
 
     def __iadd__(self, func):
-        self.Add(func)
+        self.add(func)
         return self
 
     def __isub__(self, func):
-        self.Remove(func)
+        self.remove(func)
         return self
 
+
+class EventCenter:
+    instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.instance is None:
+            cls.instance = super().__new__(cls)
+        return cls.instance
+
+    def __init__(self):
+        self.__event_dic = {}
+
+    def add_event_listener(self, name: str, action):
+        if name in self.__event_dic:
+            self.__event_dic[name] += action
+        else:
+            self.__event_dic[name] = Delegate(action)
+
+    def RemoveEventListener(self, name: str, action):
+        if name in self.__event_dic:
+            self.__event_dic[name] -= action
+
+    def event_trigger(self, name: str, *args, **kwargs):
+        if name in self.__event_dic:
+            self.__event_dic[name](*args, **kwargs)
+
+    def delete_event(self, name: str):
+        if name in self.__event_dic:
+            del self.__event_dic[name]
+
+    def clear(self):
+        self.__event_dic = {}

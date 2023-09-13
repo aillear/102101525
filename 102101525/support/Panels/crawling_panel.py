@@ -1,6 +1,6 @@
-from GUI.PanelMgr import *
-from Settings import *
-from Support.DataKeeper import DataKeeper
+from .settings import *
+from ..UIbase import DataKeeper
+import tkinter as tk
 
 
 def CrawlingPanel(_root: tk.Tk, _id: int) -> tk.Frame:
@@ -10,8 +10,8 @@ def CrawlingPanel(_root: tk.Tk, _id: int) -> tk.Frame:
     '''
     具体布局在这里
     '''
-    keyword = DataKeeper.instance.GetData('keyword')
-    video_count = DataKeeper.instance.GetData('videoCount')
+    keyword = DataKeeper.instance.get_data('keyword')
+    video_count = DataKeeper.instance.get_data('videoCount')
     tk.Label(crawling_panel, text=f"关键词: {keyword}\n爬取视频数{video_count}").grid(row=1, column=1)
     tk.Label(crawling_panel, text='正在爬取中,此过程耗时较久...\n为了防止你觉得卡了,我弄了一个计时器').grid(row=2, column=1)
 

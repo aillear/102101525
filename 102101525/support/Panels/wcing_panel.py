@@ -1,8 +1,8 @@
-from GUI.PanelMgr import *
-from Settings import *
+from .settings import *
+import tkinter as tk
 
 
-def WCingPanel(_root: tk.Tk, _id: int) -> tk.Frame:
+def WCingPanel(_root: tk.Tk, _id: int) -> tk.Frame | None:
     if _id != WCING_PANEL_ID:
         return None
     wcing_panel = tk.Frame(_root)
