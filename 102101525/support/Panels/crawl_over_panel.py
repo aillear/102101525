@@ -4,10 +4,10 @@ from .settings import *
 import tkinter as tk
 
 
-def CrawlOverPanel(_root: tk.Tk, _id: int) -> Frame | None:
+def crawl_over_panel(_root: tk.Tk, _id: int) -> Frame | None:
     if _id != CRAWLOVER_PANEL_ID:
         return None
-    crawl_over_panel = tk.Frame(_root)
+    _crawl_over_panel = tk.Frame(_root)
     '''
     具体布局在这里
     '''
@@ -25,15 +25,15 @@ def CrawlOverPanel(_root: tk.Tk, _id: int) -> Frame | None:
     file_name = (f"爬取结束,已保存为: {DataKeeper.instance.get_data('danmakuSaveName')}.csv\n"
                  f"弹幕一共{len(res_list)}条.\n"
                  f"下面是前{str_list_len}条结果:")
-    tk.Label(crawl_over_panel, text=file_name).grid(row=1, column=1)
+    tk.Label(_crawl_over_panel, text=file_name).grid(row=1, column=1)
 
     page = 0
 
     text1 = tk.StringVar(value=f"第{page+1}/{str_list_len}页")
-    tk.Label(crawl_over_panel, textvariable=text1).grid(row=2, column=1)
+    tk.Label(_crawl_over_panel, textvariable=text1).grid(row=2, column=1)
 
     text2 = tk.StringVar(value=str_list[page])
-    tk.Label(crawl_over_panel, textvariable=text2, wraplength=200,
+    tk.Label(_crawl_over_panel, textvariable=text2, wraplength=200,
              relief=tk.SUNKEN, anchor=tk.NW).grid(row=3, column=1)
 
     def PrevPage():
@@ -54,10 +54,10 @@ def CrawlOverPanel(_root: tk.Tk, _id: int) -> Frame | None:
     def Transmit():
         PanelMgr.instance.switch_panel(_root, WC_PANEL_ID)
 
-    tk.Button(crawl_over_panel, text='上一条', command=PrevPage).grid(row=4, column=1)
-    tk.Button(crawl_over_panel, text='下一条', command=NextPage).grid(row=4, column=2)
+    tk.Button(_crawl_over_panel, text='上一条', command=PrevPage).grid(row=4, column=1)
+    tk.Button(_crawl_over_panel, text='下一条', command=NextPage).grid(row=4, column=2)
     if res_list[0][1] != -1:
-        tk.Button(crawl_over_panel, text='去生成词云', command=Transmit).grid(row=5, column=1)
+        tk.Button(_crawl_over_panel, text='去生成词云', command=Transmit).grid(row=5, column=1)
 
-    crawl_over_panel.pack()
-    return crawl_over_panel
+    _crawl_over_panel.pack()
+    return _crawl_over_panel

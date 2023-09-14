@@ -151,5 +151,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 .idea
-102101525/danmaku_data/
-102101525/word_cloud_image/
+#102101525/danmaku_data/
+#102101525/word_cloud_image/

@@ -3,7 +3,6 @@ class Delegate:
     委托
     属性
     """
-
     def __init__(self, *args):  # 将可调用对象保存为属性, 藏起来
         """
         创建委托, 确保输入的变量都是函数应用,并且参数都一样.返回值无所谓
@@ -43,6 +42,7 @@ class Delegate:
         return tuple(res_list)
 
     def add(self, func):
+        # 添加监听, 后续直接用重载+=运算符,下面类似
         if not callable(func):
             raise TypeError('Argument must be callable.')
         if self.param_num == -1:
@@ -57,7 +57,6 @@ class Delegate:
         self.__func_list.append(func)
 
     def remove(self, func):
-        """没试过"""
         if func in self.__func_list:
             self.__func_list.remove(func)
         if len(self.__func_list) == 0:
@@ -73,6 +72,7 @@ class Delegate:
 
 
 class EventCenter:
+    """事件中心"""
     instance = None
 
     def __new__(cls, *args, **kwargs):

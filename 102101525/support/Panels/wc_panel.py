@@ -13,60 +13,60 @@ import os
 mask_tk = None
 
 
-def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame | None:
+def wc_panel(_root: tk.Tk, _id: int) -> tk.Frame | None:
     if _id != WC_PANEL_ID:
         return None
-    wc_panel = tk.Frame(_root)
+    _wc_panel = tk.Frame(_root)
     '''
     具体布局在这里
     '''
     # 第一行
-    tk.Label(wc_panel, text='生成图片名').grid(row=1, column=1)
+    tk.Label(_wc_panel, text='生成图片名').grid(row=1, column=1)
 
     temp = DataKeeper.instance.get_data('imageName')
     if temp is None:
         temp = 'WCImage'
     image_name = tk.StringVar(value=temp)
-    tk.Entry(wc_panel, textvariable=image_name).grid(row=1, column=2)
+    tk.Entry(_wc_panel, textvariable=image_name).grid(row=1, column=2)
 
     # 第二行
-    tk.Label(wc_panel, text='最大词数').grid(row=2, column=1)
+    tk.Label(_wc_panel, text='最大词数').grid(row=2, column=1)
 
     temp = DataKeeper.instance.get_data('maxWordNum')
     if temp is None:
         temp = 100
     max_word_num = tk.IntVar(value=temp)
-    tk.Spinbox(wc_panel, from_=50, to=500, increment=1, textvariable=max_word_num).grid(row=2, column=2)
+    tk.Spinbox(_wc_panel, from_=50, to=500, increment=1, textvariable=max_word_num).grid(row=2, column=2)
 
     # 第三行
-    tk.Label(wc_panel, text='图片尺寸').grid(row=3, column=1)
+    tk.Label(_wc_panel, text='图片尺寸').grid(row=3, column=1)
 
     temp = DataKeeper.instance.get_data('imageWidth')
     if temp is None:
         temp = 1000
     image_width = tk.IntVar(value=temp)
-    tk.Entry(wc_panel, textvariable=image_width).grid(row=3, column=2)
+    tk.Entry(_wc_panel, textvariable=image_width).grid(row=3, column=2)
 
-    tk.Label(wc_panel, text='x').grid(row=3, column=3)
+    tk.Label(_wc_panel, text='x').grid(row=3, column=3)
 
     temp = DataKeeper.instance.get_data('imageHeight')
     if temp is None:
         temp = 1000
     image_height = tk.IntVar(value=temp)
-    tk.Entry(wc_panel, textvariable=image_height).grid(row=3, column=4)
+    tk.Entry(_wc_panel, textvariable=image_height).grid(row=3, column=4)
 
     # 第四行
-    tk.Label(wc_panel, text='字体').grid(row=4, column=1)
+    tk.Label(_wc_panel, text='字体').grid(row=4, column=1)
 
-    fonts_name = tkinter.ttk.Combobox(wc_panel, state='readonly')
+    fonts_name = tkinter.ttk.Combobox(_wc_panel, state='readonly')
     fonts_name['value'] = get_file_name('./fonts', ('.ttc', '.ttf'))
     fonts_name.current(0)
     fonts_name.grid(row=4, column=2)
 
     # 第五行
-    tk.Label(wc_panel, text='图片遮罩,启用后上面设置的宽高失效').grid(row=6, column=1)
+    tk.Label(_wc_panel, text='图片遮罩,启用后上面设置的宽高失效').grid(row=6, column=1)
 
-    mask_name = tkinter.ttk.Combobox(wc_panel, state='readonly')
+    mask_name = tkinter.ttk.Combobox(_wc_panel, state='readonly')
     mask_name['value'] = get_file_name('./image_masks', ('.png', '.jpg', '.jpeg', '.gif'),
                                        True)
     mask_name.current(0)
@@ -81,7 +81,7 @@ def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame | None:
 
     global mask_tk
     mask_tk = ImageTk.PhotoImage(mask_img)
-    mask_label = tk.Label(wc_panel, image=mask_tk)
+    mask_label = tk.Label(_wc_panel, image=mask_tk)
     mask_label.grid(row=6)
 
     def ChangeMask(garbage):
@@ -129,10 +129,10 @@ def WCPanel(_root: tk.Tk, _id: int) -> tk.Frame | None:
         EventCenter.instance.RemoveEventListener('WCOver', AfterWC)
         PanelMgr.instance.switch_panel(_root, WCOVER_PANEL_ID)    # 跳转界面
 
-    tk.Button(wc_panel, text='启动!', command=Transmit).grid(row=7, column=1)
+    tk.Button(_wc_panel, text='启动!', command=Transmit).grid(row=7, column=1)
 
-    wc_panel.pack()
-    return wc_panel
+    _wc_panel.pack()
+    return _wc_panel
 
 
 # 生成词云的逻辑

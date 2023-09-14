@@ -66,7 +66,7 @@ def transform_mask(image):
     # 遍历图片的每个像素点
     for i in range(image.size[1]):
         for j in range(image.size[0]):
-            # 如果像素值小于200（表示是黑色或深色），就把对应的数组元素设为255（表示是白色）
+            # 如果像素值小于200（表示是黑色或深色），就把对应的数组元素设为0
             if pixels[j, i] < 200:
                 mask[i, j] = 0
             else:

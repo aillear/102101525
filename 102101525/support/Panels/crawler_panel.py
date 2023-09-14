@@ -8,40 +8,39 @@ from ..base import EventCenter
 from ..UIbase import DataKeeper, PanelMgr, check_for_int
 
 
-
-def CrawlerPanel(_root: tk.Tk, _id: int) -> tk.Frame:
+def crawler_panel(_root: tk.Tk, _id: int) -> tk.Frame:
     if _id != CRAWLER_PANEL_ID:
         return None
-    crawler_panel = tk.Frame(_root)
+    _crawler_panel = tk.Frame(_root)
     '''
     具体布局在这里
     '''
     # 第一行
-    tk.Label(crawler_panel, text='关键词').grid(row=1, column=1)
+    tk.Label(_crawler_panel, text='关键词').grid(row=1, column=1)
 
     temp = DataKeeper.instance.get_data("keyword")
     if temp is None:
         temp = ''
     keyword = tk.StringVar(value=temp)
-    tk.Entry(crawler_panel, textvariable=keyword).grid(row=1, column=2)
+    tk.Entry(_crawler_panel, textvariable=keyword).grid(row=1, column=2)
 
     # 第二行
-    tk.Label(crawler_panel, text='搜索数').grid(row=2, column=1)
+    tk.Label(_crawler_panel, text='搜索数').grid(row=2, column=1)
 
     temp = DataKeeper.instance.get_data("videoCount")
     if temp is None:
         temp = 1
     video_count = tk.IntVar(value=temp)
-    tk.Spinbox(crawler_panel, from_=1, to=500, increment=1, textvariable=video_count).grid(row=2, column=2)
+    tk.Spinbox(_crawler_panel, from_=1, to=500, increment=1, textvariable=video_count).grid(row=2, column=2)
 
     # 第三行
-    tk.Label(crawler_panel, text='弹幕文件保存文件名').grid(row=3, column=1)
+    tk.Label(_crawler_panel, text='弹幕文件保存文件名').grid(row=3, column=1)
 
     temp = DataKeeper.instance.get_data("danmakuSaveName")
     if temp is None:
         temp = 'danmaku_list'
     danmaku_save_name = tk.StringVar(value=temp)
-    tk.Entry(crawler_panel, textvariable=danmaku_save_name).grid(row=3, column=2)
+    tk.Entry(_crawler_panel, textvariable=danmaku_save_name).grid(row=3, column=2)
 
     # 第四行
     # 按钮绑定函数,要做的事情1.保存数据 2.开启新线程来爬虫 3.跳转界面
@@ -68,9 +67,9 @@ def CrawlerPanel(_root: tk.Tk, _id: int) -> tk.Frame:
         EventCenter.instance.RemoveEventListener('crawlOver', AfterCrawl)
         PanelMgr.instance.switch_panel(_root, CRAWLOVER_PANEL_ID)
 
-    tk.Button(crawler_panel, text="启动!", command=Transmit).grid(row=4, column=1)
-    crawler_panel.pack()
-    return crawler_panel
+    tk.Button(_crawler_panel, text="启动!", command=Transmit).grid(row=4, column=1)
+    _crawler_panel.pack()
+    return _crawler_panel
 
 
 # 爬虫主要逻辑
@@ -98,4 +97,3 @@ def CrawlerHere():
 
     # 在这里通知主线程爬取完毕
     EventCenter.instance.event_trigger('crawlOver')
-

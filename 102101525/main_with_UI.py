@@ -1,11 +1,11 @@
 from support.base import EventCenter
 from support.UIbase import DataKeeper, PanelMgr
-from support.Panels.crawler_panel import CrawlerPanel
-from support.Panels.crawling_panel import CrawlingPanel
-from support.Panels.crawl_over_panel import CrawlOverPanel
-from support.Panels.wc_panel import WCPanel
-from support.Panels.wcing_panel import WCingPanel
-from support.Panels.wc_over_panel import WCOverPanel
+from support.Panels.crawler_panel import crawler_panel
+from support.Panels.crawling_panel import crawling_panel
+from support.Panels.crawl_over_panel import crawl_over_panel
+from support.Panels.wc_panel import wc_panel
+from support.Panels.wcing_panel import wcing_panel
+from support.Panels.wc_over_panel import wc_over_panel
 from support.Panels.settings import *
 import tkinter as tk
 
@@ -14,12 +14,12 @@ EC = EventCenter()
 DK = DataKeeper()
 
 PM = PanelMgr()
-PanelMgr.instance.add_panel(CrawlerPanel)
-PanelMgr.instance.add_panel(CrawlingPanel)
-PanelMgr.instance.add_panel(CrawlOverPanel)
-PanelMgr.instance.add_panel(WCPanel)
-PanelMgr.instance.add_panel(WCingPanel)
-PanelMgr.instance.add_panel(WCOverPanel)
+PanelMgr.instance.add_panel(crawler_panel)
+PanelMgr.instance.add_panel(crawling_panel)
+PanelMgr.instance.add_panel(crawl_over_panel)
+PanelMgr.instance.add_panel(wc_panel)
+PanelMgr.instance.add_panel(wcing_panel)
+PanelMgr.instance.add_panel(wc_over_panel)
 
 
 root = tk.Tk()

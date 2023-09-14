@@ -5,6 +5,9 @@ import os
 
 
 class PanelMgr:
+    """
+    界面管理模块,用于管理界面
+    """
     instance = None
 
     def __new__(cls, *args, **kwargs):
@@ -34,6 +37,9 @@ class PanelMgr:
 
 
 class DataKeeper:
+    """
+    数据暂存模块,用于暂存数据
+    """
     instance = None
 
     def __new__(cls, *args, **kwargs):
@@ -53,6 +59,9 @@ class DataKeeper:
 
 
 def check_for_int(int_var: tk.IntVar, name: str, from_num: int, to_num: int) -> bool:
+    """
+    检查输入书否符合数据类型
+    """
     temp = None
     try:
         temp = int_var.get()
